@@ -15,6 +15,11 @@ class Brass(Enum):
     y_modulus = 112.5 * 1000 * 1000 * 1000 # 112 GPa
     rho = 8520 # in kg/m^3
 
+class Lead(Enum):
+    y_modulus = 13.789 * 1000 * 1000 * 1000 # 13.8 GPa
+    rho = 11340 # in kg/m^3
+    
+
     
 class Tine(ABC):
     """
@@ -58,7 +63,31 @@ class RectangularTine(Tine):
     def cross_sectional_area(self):
         return self.width * self.height
     
+class CylindricalTine(Tine):
+    """
+    Cylindrical Tine: the cross section of this tine can be described by a radius, r
+    """
+    radius = 0
+    material = None
 
+    def __init__(self, r, material = Steel):
+        self.radius = r
+        self.material = material
+
+    def second_moment_area(self):
+        """
+        Calculate the 2nd moment of inertia
+
+        returns a tuple (Ix, Iy) where Ix and Iy are the 2nd moment of area
+        with respect to the x and y axes.
+        """
+        Ix = (pi/4) * (self.radius ** 4)
+        Iy = (pi/4) * (self.radius ** 4)
+        return (Ix, Iy)
+
+    def cross_sectional_area(self):
+        return pi * (self.radius ** 2)
+    
 def calc_fork_len(freq, in_tine):
     """
     This function calculates the length of tines (prongs) required for
@@ -99,11 +128,4 @@ def in2m(inches):
 def m2in(m):
     return mm2in(m*1000)
 
-#driver code:
 
-t = RectangularTine(in2m(1/2), in2m(1/4), Steel)
-
-
-result = calc_fork_len(523.3, t)
-
-print(result)
