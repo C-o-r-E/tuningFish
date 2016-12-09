@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+
+# Copyright 2016 Corey Clayton <can.of.tuna@gmail.com>
+
 from math import pi, sqrt
 from abc import ABC, abstractmethod
 from enum import Enum
@@ -18,7 +21,10 @@ class Brass(Enum):
 class Lead(Enum):
     y_modulus = 13.789 * 1000 * 1000 * 1000 # 13.8 GPa
     rho = 11340 # in kg/m^3
-    
+
+class Concrete(Enum):
+    y_modulus = 17 * 1000 * 1000 * 1000 # 17 GPa
+    rho = 2400
 
     
 class Tine(ABC):
@@ -115,6 +121,7 @@ def calc_fork_len(freq, in_tine):
                                    (in_tine.material.rho.value * in_tine.cross_sectional_area())
                                   )
     return sqrt(L_squared)
+    
 
 def in2mm(inches):
     return inches * 25.4

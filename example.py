@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+# Copyright 2016 Corey Clayton <can.of.tuna@gmail.com>
+
 from TuningFork import *
 
 thick = 1/2 # inches
